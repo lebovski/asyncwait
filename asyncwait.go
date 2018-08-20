@@ -7,7 +7,7 @@ import (
 
 // AsyncWait async wait representation
 type AsyncWait interface {
-	// Wait wait method
+	// Wait method for wait result
 	Wait(func() bool) bool
 }
 
