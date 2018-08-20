@@ -1,0 +1,13 @@
+# Binaries
+*.dll
+*.so
+
+# Test
+*.test
+
+# Output of the go coverage tool
+*.coverprofile
+*.out
+
+# Editor files
+.idea
