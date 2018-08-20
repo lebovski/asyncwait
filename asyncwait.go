@@ -7,8 +7,8 @@ import (
 
 // AsyncWait async wait representation
 type AsyncWait interface {
-	// Check wait method
-	Check(func() bool) bool
+	// Wait wait method
+	Wait(func() bool) bool
 }
 
 var _ AsyncWait = (*asyncWait)(nil)
@@ -28,8 +28,8 @@ func NewAsyncWait(timeout, pollInterval time.Duration) AsyncWait {
 	}
 }
 
-// Check while timeout, make polls every pollInterval for the predicate while is not truth
-func (aw asyncWait) Check(predicate func() bool) bool {
+// Wait while timeout, make polls every pollInterval for the predicate while is not truth
+func (aw asyncWait) Wait(predicate func() bool) bool {
 	ctx, cancel := context.WithTimeout(context.Background(), aw.timeout)
 	defer cancel()
 

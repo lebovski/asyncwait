@@ -33,6 +33,6 @@ func testTemplate(funcTimeout, timeout, pollInterval time.Duration) (waitStatus,
 		time.Sleep(funcTimeout)
 		funcStatus = true
 	}()
-	waitStatus = NewAsyncWait(timeout, pollInterval).Check(func() bool { return funcStatus })
+	waitStatus = NewAsyncWait(timeout, pollInterval).Wait(func() bool { return funcStatus })
 	return
 }
