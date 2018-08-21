@@ -14,17 +14,17 @@ type AsyncWait interface {
 var _ AsyncWait = (*asyncWait)(nil)
 
 type asyncWait struct {
-	tickerChan <-chan time.Time
-	timeout    time.Duration
-	doneCh     chan struct{}
+	pollInterval time.Duration
+	timeout      time.Duration
+	doneCh       chan struct{}
 }
 
 // NewAsyncWait constructor for AsyncWait
 func NewAsyncWait(timeout, pollInterval time.Duration) AsyncWait {
 	return &asyncWait{
-		tickerChan: time.NewTicker(pollInterval).C,
-		timeout:    timeout,
-		doneCh:     make(chan struct{}),
+		pollInterval: pollInterval,
+		timeout:      timeout,
+		doneCh:       make(chan struct{}),
 	}
 }
 
@@ -39,10 +39,14 @@ func (aw asyncWait) Wait(predicate func() bool) bool {
 			return true
 		case <-ctx.Done():
 			return false
-		case <-aw.tickerChan:
+		case <-time.After(aw.pollInterval):
 			go func() {
 				if predicate() {
-					aw.doneCh <- struct{}{}
+					select {
+					case aw.doneCh <- struct{}{}:
+					case <-ctx.Done():
+						return
+					}
 				}
 			}()
 		}
