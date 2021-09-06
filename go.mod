@@ -1,3 +1,3 @@
-module github.com/vitalyisaev2/asyncwait
+module github.com/lebovski/asyncwait
 
 go 1.16
