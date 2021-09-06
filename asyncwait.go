@@ -54,6 +54,7 @@ func (aw asyncWait) Wait(predicate func() bool) bool {
 		case <-aw.doneCh:
 			return true
 		case <-ctx.Done():
+			return false
 		case <-ticker.C:
 			go func() {
 				if predicate() {
