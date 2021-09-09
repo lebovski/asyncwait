@@ -61,7 +61,6 @@ func (aw asyncWait) Wait(predicate func() bool) bool {
 					select {
 					case aw.doneCh <- struct{}{}:
 					case <-ctx.Done():
-						return
 					}
 				}
 			}()
